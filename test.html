@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <meta name="google-signin-client_id"
+    content="320117549182-g55g07t79m7s84bjg8kalfg146gln77i.apps.googleusercontent.com"> -->
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups">
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"
+    integrity="sha512-LUKzDoJKOLqnxGWWIBM4lzRBlxcva2ZTztO8bTcWPmDSpkErWx0bSP4pdsjNH8kiHAUPaT06UXcb+vOEZH+HpQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>Google One Tap Sign-up and Automatic Sign-in API Example</h1>
+  <!-- <div id="g_id_onload" data-client_id="320117549182-qs6ct406un9a850mh45ics5qloou9uui.apps.googleusercontent.com" -->
+  <div id="g_id_onload" data-client_id="320117549182-g55g07t79m7s84bjg8kalfg146gln77i.apps.googleusercontent.com"
+    data-callback="handleCallback" data-auto_prompt="false"></div>
+  <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+    data-shape="pill" data-logo_alignment="left"></div>
+
+  <div class="info" id="info">
+
+  </div>
+  <form>
+    <button type="submit" class="neworder">送出表單</button>
+  </form>
+  <div class="">
+    <button class="pay">pay</button>
+    <!-- <button class="neworder">createorder</button> -->
+  </div>
+
+  <script>
+    function parseJwt(token) {
+      var base64Url = token.split('.')[1];
+      var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      return JSON.parse(jsonPayload);
+    };
+
+    function handleCallback(response) {
+      const data = parseJwt(response.credential);
+      console.log(data);
+    }
+    // ---------------------------------------
+    const info = document.querySelector("#info");
+    const payBtn = document.querySelector(".pay");
+    const neworder = document.querySelector(".neworder");
+    let response = "";
+    let ress = '';
+    let orderId = "";
+    payBtn.addEventListener("click", (e) => {
+      axios
+        .get("http://localhost:3000/linepay/checked/1")
+        .then((res) => {
+          // console.log(res.data);
+          response = res.data;
+          console.log(response.order.orderId);
+          orderId = response.order.orderId;
+          info.innerHTML = `<div>${JSON.stringify(response)}</div>`;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+
+    neworder.addEventListener("click", (e) => {
+      axios
+        .post(`http://localhost:3000/linepay/createOrder/${orderId}`)
+        .then((res) => {
+          // console.log(res.data);
+          console.log(res.data);
+          console.log(JSON.straingify(res.data))
+          ress = res.data;
+          info.innerHTML = `<div>${JSON.stringify(ress)}</div>`;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+
+    // ---------------------------------------
+  </script>
+</body>
+
+</html>
