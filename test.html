@@ -20,12 +20,19 @@
 <body>
   <h1>Google One Tap Sign-up and Automatic Sign-in API Example</h1>
   <!-- <div id="g_id_onload" data-client_id="320117549182-qs6ct406un9a850mh45ics5qloou9uui.apps.googleusercontent.com" -->
-  <div id="g_id_onload" data-client_id="320117549182-g55g07t79m7s84bjg8kalfg146gln77i.apps.googleusercontent.com"
-    
-    data-login_uri="http://127.0.0.1:3000/signin/google"
+  <!-- <div id="g_id_onload" data-client_id="320117549182-g55g07t79m7s84bjg8kalfg146gln77i.apps.googleusercontent.com" data-login_uri="http://127.0.0.1:3000/signin/google"
     data-auto_prompt="false"></div>
   <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
-    data-shape="pill" data-logo_alignment="left"></div>
+    data-shape="pill" data-logo_alignment="left"></div> -->
+
+  <div id="g_id_onload" data-client_id="320117549182-g55g07t79m7s84bjg8kalfg146gln77i.apps.googleusercontent.com"
+    data-context="signin" data-ux_mode="popup" data-login_uri="http://127.0.0.1:3000/signin/google"
+    data-auto_prompt="false">
+  </div>
+
+  <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with"
+    data-size="large" data-logo_alignment="left">
+  </div>
 
   <div class="info" id="info">
 
